@@ -17,7 +17,6 @@ const MealCard: React.FC<MealCardProps> = ({ meal }) => {
 
   return (
     <div className="w-full">
-      {/* Image Section with Price Tag */}
       <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden mb-4">
         {!imageError ? (
           <Image
@@ -33,17 +32,14 @@ const MealCard: React.FC<MealCardProps> = ({ meal }) => {
             <span className="text-gray-400 text-sm">No image</span>
           </div>
         )}
-        
-        {/* Price Tag with Icon */}
+
         <div className="absolute top-4 left-4 bg-secondary text-white px-3 py-2 rounded-lg text-base font-bold flex items-center gap-2 shadow-lg">
           <TagIcon />
           <span>${meal.price.toFixed(2)}</span>
         </div>
       </div>
 
-      {/* Restaurant Info Section */}
       <div className="flex items-start gap-3">
-        {/* Restaurant Logo */}
         <div className="relative w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 bg-white">
           {!logoError ? (
             <Image
@@ -63,9 +59,7 @@ const MealCard: React.FC<MealCardProps> = ({ meal }) => {
           )}
         </div>
 
-        {/* Meal Info */}
         <div className="flex-1 min-w-0">
-          {/* Meal Name and Menu */}
           <div className="flex items-start justify-between gap-2 mb-2">
             <h3 className="text-xl font-bold text-gray-900 leading-tight">
               {meal.name}
@@ -78,7 +72,6 @@ const MealCard: React.FC<MealCardProps> = ({ meal }) => {
             </button>
           </div>
 
-          {/* Rating */}
           <div className="flex items-center gap-2 mb-3">
             <div className="text-yellow-500">
               <StarIcon />
@@ -88,7 +81,6 @@ const MealCard: React.FC<MealCardProps> = ({ meal }) => {
             </span>
           </div>
 
-          {/* Status Badge */}
           <div className="inline-block">
             <span
               className={`inline-flex items-center px-4 py-1.5 rounded-full text-sm font-semibold ${
@@ -107,4 +99,3 @@ const MealCard: React.FC<MealCardProps> = ({ meal }) => {
 };
 
 export default MealCard;
-

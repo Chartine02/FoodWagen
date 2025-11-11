@@ -1,6 +1,5 @@
 import { Meal } from "@/types/meal";
 
-// Featured meals data
 export const featuredMeals: Meal[] = [
   {
     id: "1",
@@ -99,4 +98,3 @@ export const featuredMeals: Meal[] = [
     status: "open",
   },
 ];
-

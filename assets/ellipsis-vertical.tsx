@@ -13,4 +13,3 @@ const EllipsisVerticalIcon = () => (
 );
 
 export default EllipsisVerticalIcon;
-

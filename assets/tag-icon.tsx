@@ -12,4 +12,3 @@ const TagIcon = () => (
 );
 
 export default TagIcon;
-

@@ -1,4 +1,3 @@
-// Meal data type definition
 export interface Meal {
   id: string;
   name: string;
@@ -11,4 +10,3 @@ export interface Meal {
   rating: number;
   status: "open" | "closed";
 }
-
