@@ -9,7 +9,7 @@ const Header = () => {
         <h1 className="text-secondary">Food<span className="text-primary">Wagen</span></h1>
       </div>
       <div>
-      <button className="bg-primary px-4 py-1 font-semibold rounded-xl">Add Meal</button>
+      <button className="bg-primary px-4 py-1 text-white font-semibold rounded-xl">Add Meal</button>
       </div>
     </nav>
   );

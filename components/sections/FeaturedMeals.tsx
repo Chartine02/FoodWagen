@@ -1,13 +1,27 @@
 "use client";
 
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import MealCard from "@/components/MealCard";
 import { featuredMeals } from "@/data/meals";
+import { Meal } from "@/types/meal";
 
 const FeaturedMeals = () => {
   const [visibleMeals, setVisibleMeals] = useState(8);
-  const mealsToShow = featuredMeals.slice(0, visibleMeals);
+  const [ meals , setMeals] = useState<Meal[]>([])
+  // const mealsToShow = featuredMeals.slice(0, visibleMeals);
   const hasMore = visibleMeals < featuredMeals.length;
+
+  
+  useEffect(() =>{
+
+    const fetchData = async () => {
+      const res = await fetch('https://6852821e0594059b23cdd834.mockapi.io/Food')
+      const meals = await res.json()
+      setMeals(meals)
+      console.log(meals)
+    }
+    fetchData()
+  }, [])
 
   const handleLoadMore = () => {
     setVisibleMeals((prev) => Math.min(prev + 8, featuredMeals.length));
@@ -20,16 +34,16 @@ const FeaturedMeals = () => {
       </h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-        {mealsToShow.map((meal) => (
+        {meals.length && meals.map((meal) => (
           <MealCard key={meal.id} meal={meal} />
         ))}
       </div>
 
-      {hasMore && (
+      {(
         <div className="flex justify-center mt-12">
           <button
             onClick={handleLoadMore}
-            className="bg-primary text-white font-semibold px-8 py-3 rounded-lg hover:opacity-90 transition-opacity flex items-center gap-2"
+            className="bg-primary text-white hover:cursor-pointer font-semibold px-8 py-3 rounded-lg hover:opacity-90 transition-opacity flex items-center gap-2"
           >
             <span>Load more</span>
             <span>&gt;</span>

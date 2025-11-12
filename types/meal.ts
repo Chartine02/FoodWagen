@@ -1,12 +1,17 @@
 export interface Meal {
   id: string;
+  avatar: string;
   name: string;
   price: number;
   image: string;
-  restaurant: {
-    name: string;
-    logo: string;
-  };
+  restaurant: Restaurant;
   rating: number;
-  status: "open" | "closed";
+  logo: string;
+  open: boolean;
+  Price: string
+}
+
+export interface  Restaurant {
+  logo: string;
+  status: "open" | "closed"
 }

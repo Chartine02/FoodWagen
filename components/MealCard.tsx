@@ -17,10 +17,10 @@ const MealCard: React.FC<MealCardProps> = ({ meal }) => {
 
   return (
     <div className="w-full">
-      <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden mb-4">
+      <div className="relative w-full aspect-4/3 rounded-2xl overflow-hidden mb-4">
         {!imageError ? (
           <Image
-            src={meal.image}
+            src={meal.image || meal.avatar}
             alt={meal.name}
             fill
             className="object-cover"
@@ -35,16 +35,16 @@ const MealCard: React.FC<MealCardProps> = ({ meal }) => {
 
         <div className="absolute top-4 left-4 bg-secondary text-white px-3 py-2 rounded-lg text-base font-bold flex items-center gap-2 shadow-lg">
           <TagIcon />
-          <span>${meal.price.toFixed(2)}</span>
+          <span>${meal.Price || meal.price.toFixed(2)}</span>
         </div>
       </div>
 
       <div className="flex items-start gap-3">
-        <div className="relative w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 bg-white">
+        <div className="relative w-16 h-16 rounded-xl overflow-hidden shrink-0 bg-white">
           {!logoError ? (
             <Image
-              src={meal.restaurant.logo}
-              alt={meal.restaurant.name}
+              src={meal.logo || meal.avatar || meal.restaurant?.logo}
+              alt={meal.name}
               fill
               className="object-contain p-2"
               sizes="64px"
@@ -53,7 +53,7 @@ const MealCard: React.FC<MealCardProps> = ({ meal }) => {
           ) : (
             <div className="w-full h-full flex items-center justify-center bg-gray-100">
               <span className="text-gray-400 text-sm font-bold">
-                {meal.restaurant.name.charAt(0)}
+                {meal.name.charAt(0)}
               </span>
             </div>
           )}
@@ -65,7 +65,7 @@ const MealCard: React.FC<MealCardProps> = ({ meal }) => {
               {meal.name}
             </h3>
             <button
-              className="text-gray-400 hover:text-gray-600 transition-colors flex-shrink-0 mt-1"
+              className="text-gray-400 hover:text-gray-600 transition-colors shrink-0 mt-1"
               aria-label="More options"
             >
               <EllipsisVerticalIcon />
@@ -77,19 +77,21 @@ const MealCard: React.FC<MealCardProps> = ({ meal }) => {
               <StarIcon />
             </div>
             <span className="text-lg font-medium text-gray-700">
-              {meal.rating % 1 === 0 ? meal.rating : meal.rating.toFixed(1)}
+              {meal.rating % 1 === 0
+                ? meal.rating
+                : Number(meal.rating).toFixed(1)}
             </span>
           </div>
 
-          <div className="inline-block">
+          <div>
             <span
-              className={`inline-flex items-center px-4 py-1.5 rounded-full text-sm font-semibold ${
-                meal.status === "open"
+              className={`inline-flex px-4 py-1.5 rounded-full text-sm font-semibold ${
+                meal.open
                   ? "bg-green-100 text-green-600"
                   : "bg-orange-100 text-orange-600"
               }`}
             >
-              {meal.status === "open" ? "Open" : "Closed"}
+              {meal.open ? "Open" : "Closed"}
             </span>
           </div>
         </div>
