@@ -39,7 +39,7 @@ const MealCard: React.FC<MealCardProps> = ({ meal }) => {
         </div>
       </div>
 
-      <div className="flex items-start gap-3">
+      <div className="flex items-start gap-3 mb-4">
         <div className="relative w-16 h-16 rounded-xl overflow-hidden shrink-0 bg-white">
           {!logoError ? (
             <Image
@@ -72,7 +72,7 @@ const MealCard: React.FC<MealCardProps> = ({ meal }) => {
             </button>
           </div>
 
-          <div className="flex items-center gap-2 mb-3">
+          <div className="flex items-center gap-2">
             <div className="text-yellow-500">
               <StarIcon />
             </div>
@@ -82,19 +82,20 @@ const MealCard: React.FC<MealCardProps> = ({ meal }) => {
                 : Number(meal.rating).toFixed(1)}
             </span>
           </div>
-
-          <div>
-            <span
-              className={`inline-flex px-4 py-1.5 rounded-full text-sm font-semibold ${
-                meal.open
-                  ? "bg-green-100 text-green-600"
-                  : "bg-orange-100 text-orange-600"
-              }`}
-            >
-              {meal.open ? "Open" : "Closed"}
-            </span>
-          </div>
         </div>
+      </div>
+
+      {/* Status Badge - Positioned at bottom left */}
+      <div>
+        <span
+          className={`inline-flex px-4 py-1.5 rounded-xl text-sm font-semibold ${
+            meal.open
+              ? "bg-green-100 text-green-600"
+              : "bg-orange-100 text-orange-600"
+          }`}
+        >
+          {meal.open ? "Open" : "Closed"}
+        </span>
       </div>
     </div>
   );

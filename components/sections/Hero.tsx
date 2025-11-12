@@ -12,7 +12,7 @@ const Hero = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   return (
-    <section className="w-full bg-primary min-h-[600px] flex flex-col lg:flex-row items-center justify-between px-8 md:px-16 lg:px-32 xl:px-40 py-12 lg:py-0">
+    <section className="w-full bg-primary min-h-[600px] flex flex-col lg:flex-row items-center justify-between px-8 md:px-16 lg:px-32 xl:px-40 pt-12 lg:py-0">
       <div className="flex-1 space-y-8 mb-8 lg:mb-0 lg:pr-8">
         <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight">
           Are you starving?
@@ -94,14 +94,14 @@ const Hero = () => {
         </div>
       </div>
 
-      <div className="flex-1 flex items-center justify-center lg:justify-end mt-8 lg:mt-0 lg:pl-8">
+      <div className="relative bottom-0 flex items-end self-end justify-end lg:justify-end mt-8 lg:mt-0 lg:pl-8">
         <div className="relative w-full max-w-md lg:max-w-lg xl:max-w-2xl">
-          <div className="relative w-full aspect-square rounded-2xl overflow-hidden">
+          <div className="relative w-full rounded-2xl overflow-hidden">
             <Image
               src="/hero-image-ramen.png"
               alt="hero image ramen"
-              width={600}
-              height={600}
+              width={800}
+              height={800}
               className="object-cover w-full h-full"
               priority
             />

@@ -3,7 +3,7 @@ import React from "react";
 
 const Header = () => {
   return (
-    <nav className="flex bg-white h-12 justify-between items-center px-18">
+    <nav className="flex lg:px-36 w-full md:px-16 bg-white h-12 justify-between items-center px-18">
       <div className="flex items-center font-bold">
         <Image src="logo.svg" width={12} height={12} alt="logo" />
         <h1 className="text-secondary">Food<span className="text-primary">Wagen</span></h1>
