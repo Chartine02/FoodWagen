@@ -2,29 +2,71 @@
 
 import { useEffect, useState } from "react";
 import MealCard from "@/components/MealCard";
-import { featuredMeals } from "@/data/meals";
+import Modal from "@/components/ui/Modal";
+import EditMealForm from "@/components/forms/EditMealForm";
+import DeleteMealDialog from "@/components/forms/DeleteMealDialog";
 import { Meal } from "@/types/meal";
 
 const FeaturedMeals = () => {
   const [visibleMeals, setVisibleMeals] = useState(8);
-  const [ meals , setMeals] = useState<Meal[]>([])
-  // const mealsToShow = featuredMeals.slice(0, visibleMeals);
-  const hasMore = visibleMeals < featuredMeals.length;
+  const [meals, setMeals] = useState<Meal[]>([]);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedMeal, setSelectedMeal] = useState<Meal | null>(null);
+  const mealsToShow = meals.slice(0, 8);
+  const hasMore = visibleMeals < meals.length;
 
-  
-  useEffect(() =>{
-
+  useEffect(() => {
     const fetchData = async () => {
-      const res = await fetch('https://6852821e0594059b23cdd834.mockapi.io/Food')
-      const meals = await res.json()
-      setMeals(meals)
-      console.log(meals)
-    }
-    fetchData()
-  }, [])
+      const res = await fetch(
+        "https://6852821e0594059b23cdd834.mockapi.io/Food"
+      );
+      const meals = await res.json();
+      setMeals(meals);
+    };
+    fetchData();
+  }, []);
 
   const handleLoadMore = () => {
-    setVisibleMeals((prev) => Math.min(prev + 8, featuredMeals.length));
+    setVisibleMeals((prev) => Math.min(prev + 8, meals.length));
+  };
+
+  const handleEdit = (meal: Meal) => {
+    setSelectedMeal(meal);
+    setShowEditModal(true);
+  };
+
+  const handleEditSubmit = async (data: Partial<Meal>) => {
+    if (!selectedMeal) return;
+    
+    // Update local state
+    setMeals((prevMeals) =>
+      prevMeals.map((m) => (m.id === selectedMeal.id ? { ...m, ...data } : m))
+    );
+    
+    // Add API call here
+    console.log("Updating meal:", { ...selectedMeal, ...data });
+    
+    setShowEditModal(false);
+    setSelectedMeal(null);
+  };
+
+  const handleDelete = (meal: Meal) => {
+    setSelectedMeal(meal);
+    setShowDeleteModal(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!selectedMeal) return;
+    
+    // Update local state
+    setMeals((prevMeals) => prevMeals.filter((m) => m.id !== selectedMeal.id));
+    
+    // Add API call here
+    console.log("Deleting meal:", selectedMeal);
+    
+    setShowDeleteModal(false);
+    setSelectedMeal(null);
   };
 
   return (
@@ -34,12 +76,18 @@ const FeaturedMeals = () => {
       </h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-        {meals.length && meals.map((meal) => (
-          <MealCard key={meal.id} meal={meal} />
-        ))}
+        {mealsToShow.length &&
+          meals.map((meal) => (
+            <MealCard
+              key={meal.id}
+              meal={meal}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+            />
+          ))}
       </div>
 
-      {(
+      {hasMore && (
         <div className="flex justify-center mt-12">
           <button
             onClick={handleLoadMore}
@@ -50,6 +98,26 @@ const FeaturedMeals = () => {
           </button>
         </div>
       )}
+
+      {/* Edit Meal Modal */}
+      {selectedMeal && (
+        <Modal isOpen={showEditModal} onClose={() => setShowEditModal(false)}>
+          <EditMealForm
+            meal={selectedMeal}
+            onSubmit={handleEditSubmit}
+            onCancel={() => setShowEditModal(false)}
+          />
+        </Modal>
+      )}
+
+      {/* Delete Meal Dialog */}
+      <Modal isOpen={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
+        <DeleteMealDialog
+          mealName={selectedMeal?.name}
+          onConfirm={handleDeleteConfirm}
+          onCancel={() => setShowDeleteModal(false)}
+        />
+      </Modal>
     </section>
   );
 };

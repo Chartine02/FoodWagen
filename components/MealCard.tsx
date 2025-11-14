@@ -1,19 +1,50 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { Meal } from "@/types/meal";
 import StarIcon from "@/assets/star";
 import TagIcon from "@/assets/tag-icon";
 import EllipsisVerticalIcon from "@/assets/ellipsis-vertical";
+import Menu from "./ActionMenu";
 
 interface MealCardProps {
   meal: Meal;
+  onEdit?: (meal: Meal) => void;
+  onDelete?: (meal: Meal) => void;
 }
 
-const MealCard: React.FC<MealCardProps> = ({ meal }) => {
+const MealCard: React.FC<MealCardProps> = ({ meal, onEdit, onDelete }) => {
   const [imageError, setImageError] = useState(false);
   const [logoError, setLogoError] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setShowMenu(false);
+      }
+    };
+
+    if (showMenu) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showMenu]);
+
+  const handleEdit = () => {
+    setShowMenu(false);
+    if (onEdit) onEdit(meal);
+  };
+
+  const handleDelete = () => {
+    setShowMenu(false);
+    if (onDelete) onDelete(meal);
+  };
 
   return (
     <div className="w-full">
@@ -64,19 +95,25 @@ const MealCard: React.FC<MealCardProps> = ({ meal }) => {
             <h3 className="text-xl font-bold text-gray-900 leading-tight">
               {meal.name}
             </h3>
-            <button
-              className="text-gray-400 hover:text-gray-600 transition-colors shrink-0 mt-1"
-              aria-label="More options"
-            >
-              <EllipsisVerticalIcon />
-            </button>
+            <div className="relative" ref={menuRef}>
+              <button
+                onClick={() => setShowMenu(!showMenu)}
+                className="text-black hover:text-gray-600 hover:cursor-pointer transition-colors shrink-0 mt-1"
+                aria-label="More options"
+              >
+                <EllipsisVerticalIcon />
+              </button>
+              {showMenu && (
+                <Menu handleEdit={handleEdit} handleDelete={handleDelete} />
+              )}
+            </div>
           </div>
 
           <div className="flex items-center gap-2">
-            <div className="text-yellow-500">
+            <div className="text-primary">
               <StarIcon />
             </div>
-            <span className="text-lg font-medium text-gray-700">
+            <span className="text-lg text-primary font-medium">
               {meal.rating % 1 === 0
                 ? meal.rating
                 : Number(meal.rating).toFixed(1)}
@@ -85,7 +122,6 @@ const MealCard: React.FC<MealCardProps> = ({ meal }) => {
         </div>
       </div>
 
-      {/* Status Badge - Positioned at bottom left */}
       <div>
         <span
           className={`inline-flex px-4 py-1.5 rounded-xl text-sm font-semibold ${
